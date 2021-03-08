@@ -109,7 +109,7 @@ const Login = () => {
                     <form onSubmit={submitLogin}>
                       <div className="form-group mb-3">
                         <CLabel style={{ color: "#7e7e7e" }}>
-                          ชื่อผู้ใช้งานasdasd
+                          ชื่อผู้ใช้งาน
                         </CLabel>
                         <CInputGroup>
                           <CInputGroupPrepend>
