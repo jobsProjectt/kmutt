@@ -36,7 +36,7 @@ const ModalAssess = (props) => {
   const onFinish = (values) => {
     if (props.title.type === "edit") {
       close();
-      console.log("data edit", values);
+      console.log("data editt", values);
       notify.success("แก้ไขรายการประเมินเรียบร้อย!");
     } else {
       close();
