@@ -57,14 +57,6 @@ const ModalAdmin = (props) => {
     dispatch({ type: "set", adminModal: { ...adminModal, show: false } });
   };
 
-  const validateMessages = {
-    required: "กรุณากรอก ${label}!",
-    types: {
-      email: "${label} ไม่ถูกต้อง !",
-      number: "${label} is not a valid number!",
-    },
-  };
-
   const saveCommittee = () => {
     setLoading(true);
     close();
@@ -154,14 +146,13 @@ const ModalAdmin = (props) => {
           {...layout}
           name="nest-messages"
           onFinish={onFinish}
-          validateMessages={validateMessages}
         >
           <CModalBody>
             <Form.Item
               style={{ marginBottom: "10px" }}
               name={["user", "name"]}
               label="ชื่อ-นามสกุล"
-              rules={[{ required: true }]}
+              rules={[{ required: true, message: "กรุณากรอก ชื่อ-นามสกุล!" }]}
             >
               <Input autoComplete={"off"} />
             </Form.Item>
@@ -169,7 +160,7 @@ const ModalAdmin = (props) => {
               style={{ marginBottom: "10px" }}
               name={["user", "position"]}
               label="ตำแหน่ง"
-              rules={[{ required: true }]}
+              rules={[{ required: true, message: "กรุณากรอก ตำแหน่ง!" }]}
             >
               <Input autoComplete={"off"} />
             </Form.Item>
@@ -177,7 +168,10 @@ const ModalAdmin = (props) => {
               style={{ marginBottom: "10px" }}
               name={["user", "email"]}
               label="อีเมลล์"
-              rules={[{ required: true, type: "email" }]}
+              rules={[
+                { required: true, message: "กรุณากรอก อีเมลล์!" },
+                { type: "email", message: "อีเมลล์ ไม่ถูกต้อง!" },
+              ]}
             >
               <Input autoComplete={"off"} />
             </Form.Item>
@@ -185,7 +179,7 @@ const ModalAdmin = (props) => {
               style={{ marginBottom: "10px" }}
               name={["user", "bel"]}
               label="เบอร์โทร"
-              rules={[{ required: true }]}
+              rules={[{ required: true, message: "กรุณากรอก เบอร์โทร!" }]}
             >
               <Input autoComplete={"off"} minLength={10} maxLength={10} />
             </Form.Item>

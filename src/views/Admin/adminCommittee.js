@@ -173,7 +173,7 @@ const AdminCommittee = () => {
   const search = (value) => {
     setLoadingSearch(true);
     setLoadingTable2(true);
-    const regex = new RegExp("." + value.toString().toUpperCase(), "g");
+    const regex = new RegExp(value.toString().toUpperCase(), "g");
     const find = filterCommittee.filter(({ name }) => {
       const upper = name.toString().toUpperCase();
       return upper.match(regex);

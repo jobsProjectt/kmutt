@@ -1,29 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table, Input, Popconfirm } from "antd";
-import { notify } from "../CustomComponent";
-import { useDispatch } from "react-redux";
-import ModalAdmin from "./ModalAdmin";
+import { Table, Input } from "antd";
+import { date2Thai } from "../CustomFunction";
+import { useHistory } from "react-router-dom";
 
-import "./admin.css";
+import "./committee.css";
 
 const { Search } = Input;
 const title = { color: "white", fontWeight: "bold", textAlign: "center" };
 
-const AdminStaff = () => {
-  const [hover, sethover] = useState(false);
+const CommitteeMain = () => {
+  const history = useHistory();
+
   const [LoadingTable, setLoadingTable] = useState(false);
   const [LoadingSearch, setLoadingSearch] = useState(false);
-  const [datastaff, setdatastaff] = useState([]);
-  const [filterstaff, setfilterstaff] = useState([]);
-  const [SendData, setSendData] = useState([]);
+  const [data, setdata] = useState([]);
+  const [filter, setfilter] = useState([]);
+  const [Title, setTitle] = useState("");
 
-  const dispatch = useDispatch();
-
-  const columnsstaff = [
+  const columns = [
     {
       title: <div style={title}>เลขที่</div>,
-      dataIndex: "no",
-      key: "no",
+      dataIndex: "id",
+      key: "id",
       align: "center",
       width: "80px",
       render: (text, row, index) => {
@@ -41,61 +39,51 @@ const AdminStaff = () => {
       key: "position",
     },
     {
-      title: <div style={title}>เบอร์โทร</div>,
-      dataIndex: "bel",
-      key: "bel",
+      title: <div style={title}>ระดับ</div>,
+      dataIndex: "level",
+      key: "level",
     },
     {
-      title: <div style={title}>อีเมล</div>,
-      dataIndex: "email",
-      key: "email",
+      title: <div style={title}>สังกัด</div>,
+      dataIndex: "division",
+      key: "division",
     },
     {
       title: <div style={title}>{null}</div>,
-      dataIndex: "delete",
-      key: "delete",
-      width: "50px",
+      dataIndex: "status",
+      key: "status",
+      //   width: "50px",
       render: (text, row, index) => {
+        const success = row.status === "success" ? true : false;
         return (
           <div
             style={{
               wordWrap: "break-word",
               wordBreak: "break-word",
               textAlign: "center",
-              backgroundColor: "none",
-              cursor: "pointer",
             }}
+            className={success ? "btnCommitteeDisable" : "btnCommittee"}
+            onClick={
+              success ? null : () => history.push(`/committee/${row.no}`)
+            }
           >
-            <Popconfirm
-              style={{ border: "1px solid black", padding: 10 }}
-              placement="topRight"
-              title={`คุณต้องการลบพนักงานเลขที่ ${row.no} หรือไม่?`}
-              onConfirm={() => deleteStaff(row)}
-              okText="ตกลง"
-              cancelText="ยกเลิก"
-            >
-              <i className="fas fa-trash-alt deleteBtn" />
-            </Popconfirm>
+            {`${success ? "ประเมินแล้ว" : "ประเมิน"}`}
           </div>
         );
       },
     },
   ];
 
-  const deleteStaff = (row) => {
-    console.log("delete พนักงาน", row);
-    notify.success("ลบรายชื่อพนักงาน เรียบร้อย!");
-  };
-
   const search = (value) => {
     setLoadingSearch(true); // loading ปุ่ม search  // true = โหลดอยู่ , false = เสร็จแล้ว
     setLoadingTable(true); // loading table  // true = โหลดอยู่ , false = เสร็จแล้ว
+
     const regex = new RegExp(value.toString().toUpperCase(), "g");
-    const find = filterstaff.filter(({ name }) => {
+    const find = filter.filter(({ name }) => {
       const upper = name.toString().toUpperCase();
       return upper.match(regex);
     });
-    setdatastaff(find); // set Data ใส่ตาราง
+    setdata(find); // set Data ใส่ตาราง
     setLoadingSearch(false);
     setLoadingTable(false);
   };
@@ -104,107 +92,112 @@ const AdminStaff = () => {
     // loading table  // true = โหลดอยู่ , false = เสร็จแล้ว
     setLoadingTable(true);
     // set Data ใส่ตาราง
-    setdatastaff([
+    setdata([
       {
         no: "1",
         name: "John Brown",
         position: "xxxxxxxxxxx",
-        bel: "xxxxxxxxxxx",
-        email: "xxxxx@hotmail.com",
+        level: "xxxxxx",
+        division: "xxxxxx",
+        status: "wait",
       },
       {
         no: "2",
         name: "Jim Green",
         position: "xxxxxxxxxxx",
-        bel: "xxxxxxxxxxx",
-        email: "xxxxx@hotmail.com",
+        level: "xxxxxx",
+        division: "xxxxxx",
+        status: "wait",
       },
       {
         no: "3",
         name: "Joe Black",
         position: "xxxxxxxxxxx",
-        bel: "xxxxxxxxxxx",
-        email: "xxxxx@hotmail.com",
+        level: "xxxxxx",
+        division: "xxxxxx",
+        status: "wait",
       },
       {
         no: "4",
         name: "John Brown",
         position: "xxxxxxxxxxx",
-        bel: "xxxxxxxxxxx",
-        email: "xxxxx@hotmail.com",
+        level: "xxxxxx",
+        division: "xxxxxx",
+        status: "wait",
       },
       {
         no: "5",
         name: "Jim Green",
         position: "xxxxxxxxxxx",
-        bel: "xxxxxxxxxxx",
-        email: "xxxxx@hotmail.com",
+        level: "xxxxxx",
+        division: "xxxxxx",
+        status: "wait",
       },
       {
         no: "6",
         name: "Joe Black",
         position: "xxxxxxxxxxx",
-        bel: "xxxxxxxxxxx",
-        email: "xxxxx@hotmail.com",
+        level: "xxxxxx",
+        division: "xxxxxx",
+        status: "success",
       },
     ]);
     // set Data ไว้ filter
-    setfilterstaff([
+    setfilter([
       {
         no: "1",
         name: "John Brown",
         position: "xxxxxxxxxxx",
-        bel: "xxxxxxxxxxx",
-        email: "xxxxx@hotmail.com",
+        level: "xxxxxx",
+        division: "xxxxxx",
+        status: "wait",
       },
       {
         no: "2",
         name: "Jim Green",
         position: "xxxxxxxxxxx",
-        bel: "xxxxxxxxxxx",
-        email: "xxxxx@hotmail.com",
+        level: "xxxxxx",
+        division: "xxxxxx",
+        status: "wait",
       },
       {
         no: "3",
         name: "Joe Black",
         position: "xxxxxxxxxxx",
-        bel: "xxxxxxxxxxx",
-        email: "xxxxx@hotmail.com",
+        level: "xxxxxx",
+        division: "xxxxxx",
+        status: "wait",
       },
       {
         no: "4",
         name: "John Brown",
         position: "xxxxxxxxxxx",
-        bel: "xxxxxxxxxxx",
-        email: "xxxxx@hotmail.com",
+        level: "xxxxxx",
+        division: "xxxxxx",
+        status: "wait",
       },
       {
         no: "5",
         name: "Jim Green",
         position: "xxxxxxxxxxx",
-        bel: "xxxxxxxxxxx",
-        email: "xxxxx@hotmail.com",
+        level: "xxxxxx",
+        division: "xxxxxx",
+        status: "wait",
       },
       {
         no: "6",
         name: "Joe Black",
         position: "xxxxxxxxxxx",
-        bel: "xxxxxxxxxxx",
-        email: "xxxxx@hotmail.com",
+        level: "xxxxxx",
+        division: "xxxxxx",
+        status: "success",
       },
     ]);
+    // set Title
+    setTitle(
+      `${date2Thai("2020-01-01", true)} - ${date2Thai("2020-07-01", true)}`
+    );
     setLoadingTable(false);
-  };
-
-  const openModal = (type, page) => {
-    dispatch({
-      type: "set",
-      adminModal: {
-        show: true,
-        type,
-        page,
-      },
-    });
   };
 
   useEffect(() => {
@@ -216,55 +209,38 @@ const AdminStaff = () => {
       <div className="row wrap window-height">
         <div className="col-xs-12 col-sm-12">
           <label
-            style={{ fontWeight: "bold", fontSize: "36px", color: "black" }}
+            style={{ fontWeight: "bold", fontSize: "26px", color: "black" }}
           >
-            รายชื่อพนักงาน
+            การประเมินรอบปีงบประมาณ {Title}
           </label>
           <div className="row no-gutter  mb-3">
             <div className="col-sm-6">
+              <label
+                style={{
+                  fontWeight: "normal",
+                  fontSize: "20px",
+                  color: "black",
+                }}
+              >
+                รายชื่อพนักงานที่ต้องประเมิน
+              </label>
+            </div>
+            <div className="col-sm-6 text-sm-right ">
               <Search
-                className="adminButton"
+                className="committeeInput"
                 placeholder="ค้นหารายชื่อพนักงาน"
                 loading={LoadingSearch}
                 style={{ width: "80%" }}
                 onSearch={search}
               />
             </div>
-            <div className="col-sm-6 text-sm-right ">
-              <Button
-                shape="round"
-                size={"large"}
-                onMouseEnter={() => sethover(true)}
-                onMouseLeave={() => sethover(false)}
-                onClick={() => openModal("add", "staff")}
-                style={
-                  hover
-                    ? {
-                        backgroundColor: "#f6be32",
-                        border: "2px solid #f6be32",
-                        color: "white",
-                        paddingLeft: "50px",
-                        paddingRight: "50px",
-                      }
-                    : {
-                        backgroundColor: "white",
-                        border: "2px solid #f6be32",
-                        color: "black",
-                        paddingLeft: "50px",
-                        paddingRight: "50px",
-                      }
-                }
-              >
-                เพิ่มพนักงาน
-              </Button>
-            </div>
           </div>
           {/* ********************************** */}
           <Table
             rowKey={"no"} // uniq key หรือ primary key ตัวไม่ซ้ำ
-            className="adminTable"
-            columns={columnsstaff}
-            dataSource={datastaff}
+            className="committeeTable"
+            columns={columns}
+            dataSource={data}
             pagination={{
               defaultPageSize: 10,
               showSizeChanger: true,
@@ -279,18 +255,11 @@ const AdminStaff = () => {
             locale={{ emptyText: "ไม่มีข้อมูล" }}
             scroll={{ y: 500 }}
             size="small"
-            onRow={(record, recordIndex) => ({
-              onClick: (e) => {
-                setSendData(record);
-                openModal("edit", "staff");
-              },
-            })}
           />
         </div>
       </div>
-      <ModalAdmin reload={LoadData} data={SendData} />
     </div>
   );
 };
 
-export default AdminStaff;
+export default CommitteeMain;

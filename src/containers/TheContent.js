@@ -40,7 +40,7 @@ const TheContent = () => {
                 ))
               );
             })}
-            <Redirect from="/" to="/dashboard" />
+            <Redirect from="/" to="/404" />
           </Switch>
         </Suspense>
       </CContainer>

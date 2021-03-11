@@ -4,15 +4,12 @@ import { WatDatePicker } from "thaidatepicker-react";
 import { notify } from "../CustomComponent";
 import { date2Thai } from "../CustomFunction";
 import ModalAssess from "./ModalAssess";
-import { useDispatch } from "react-redux";
 
 import "./admin.css";
 
 const title = { color: "white", fontWeight: "bold", textAlign: "center" };
 
 const AdminAssessment = () => {
-  const dispatch = useDispatch();
-
   const [Hover, setHover] = useState(false);
   const [selectedDateStart, setSelectedDateStart] = useState("");
   const [selectedDateEnd, setSelectedDateEnd] = useState("");

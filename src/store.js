@@ -7,6 +7,9 @@ const initialState = {
     type: null,
     page: null,
   },
+  committeeAss2Modal: {
+    show: false,
+  },
 };
 
 const changeState = (state = initialState, { type, ...rest }) => {
